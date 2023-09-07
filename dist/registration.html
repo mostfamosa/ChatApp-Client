@@ -1,0 +1,46 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="register">
+        <!-- <script src="../src/registration.js"></script> -->
+        <script src="main.js"></script>
+        
+        <h1>Registeration Page</h1>
+        <br>
+        <div id="signup">
+            <div class="mb-3">
+                <label for="emailInput" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="emailInputReg">
+            </div>
+            <div class="mb-3">
+                <label for="userInput" class="form-label">Nickname</label>
+                <input type="text" class="form-control" id="userInputReg">
+            </div>
+            <div class="mb-3">
+                <label for="passwordInput" class="form-label">Password</label>
+                <input type="password" class="form-control" id="passwordInputReg">
+            </div>
+            <button id="registerWithEmail" type="submit" class="btn btn-primary">Register</button>
+            <button id="toLogin" onclick="location.href='index.html';" class="btn btn-secondary">Login Page</button>
+
+            <div>
+                <label id="errorLbl" style="color:red ;"></label>
+                <label id="successLbl" style="color:green ;"></label>
+            </div>
+        </div>
+    </div>
+
+ 
+</body>
+
+</html>

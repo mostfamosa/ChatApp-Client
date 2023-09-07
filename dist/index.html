@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>ChatApp</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body width="100%" center>
+  <style>
+    .menuUL {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+    
+    li {
+      float: left;
+    }
+    
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    
+    li a:hover {
+      background-color: #111;
+    }
+    </style>
+  <div style="text-align: -webkit-center;border-radius: 8px;">
+    <ul class="menuUL" style="width: fit-content;border-radius: 8px;background-color: gray;" >
+      <li><a id="toMainChatRoom" class="active">Main Chat Room</a></li>
+      <li><a id="toPrivateChat" >Private Chats</a></li>
+    </ul>
+
+  </div>
+
+
+
+
+  <div id="mainPage" class="chatWindow">
+    <div id="profileSection" class="profile" dir="ltr">
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- -------------- -->
+    <div id="mainChatRoom" class="mainpage" style="margin-left: 150px; padding-top: 50px;">
+      <br>
+      <div class="row" style="width: 70%;margin: 100px;">
+
+
+        <div id="SigninSection" class="signin" style="margin-left: -201px;margin-right: 119px;">
+          <h1>Sign in </h1>
+          <div id="signin">
+            <div class="mb-3">
+              <label for="emailInput" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="emailInput">
+            </div>
+
+            <div class="mb-3">
+              <label for="passwordInput" class="form-label">Password</label>
+              <input type="password" class="form-control" id="passwordInput">
+              <a id="toRegister" href="registration.html">Regiteration page</a>
+            </div>
+
+
+            <button id="signinBtn" type="submit" class="btn btn-primary">Sign in</button>
+            <div>
+              <label id="successLbl2" style="color:green ;"></label>
+              <label id="errorLbl2" style="color:red ;"></label>
+            </div>
+            <br>
+            <br>
+            <hr>
+
+
+            <!-- <p>join the main chat room as a Guest</p> -->
+            <div class="mb-3">
+              <label for="userInput" class="form-label">Nickname</label>
+              <input type="text" class="form-control" id="userInput">
+            </div>
+            <button id="signinBtnGuest" class="btn btn-primary">Sign in as Guest</button>
+            <label id="errorLbl" style="color:red ;"></label>
+            <label id="successLbl" style="color:green ;"></label>
+          </div>
+        </div>
+        <div class="mainchat" style="margin-right: 7px;margin-left: 10px;">
+          <textarea class="form-control" id="main-chat" rows="20"></textarea>
+          <div class="input-group mb-3">
+            <input type="text" id="message-input" class="form-control" placeholder="Type your message here..."
+              aria-describedby="send-btn">
+            <button class="btn btn-outline-primary" type="button" id="send-btn">Send</button>
+            <button class="btn btn-outline-secondary" type="button" id="export-btn">Export</button>
+          </div>
+          <label id="mutelbl" style="color:red ;"></label>
+
+        </div>
+
+
+        <div class="userList" style="margin-left: -26px;">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+            integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+          <div">
+            <div class="col-lg-9 mt-lg-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
+                    <table id="candidates-list" class="table manage-candidates-top mb-0">
+                      <thead>
+                        <tr>
+                          <th>Online Users:</th>
+                          <th class="text-center">Status</th>
+                        </tr>
+                      </thead>
+                      <!-- =================================================== -->
+
+                      <tbody class="candidates-list">
+
+
+
+
+                      </tbody>
+                      <script>
+                        function getUserById(id) {
+                          if (sessionStorage.getItem("token") != undefined) {
+                            fetch("http://localhost:8080/user/userById", {
+                              method: 'POST',
+                              body: JSON.stringify({ token: id }),
+                              headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': 'POST,PATCH,OPTIONS'
+                              }
+                            }).then((res => {
+                              let data = res.json();
+                              data.then(function (result) {
+                                let msg = result.message;
+                                console.log("-------------");
+                                console.log(result);
+
+                                if (!result.private) {
+                                  document.getElementById("profilePage").style.display = "block";
+                                  var image = document.getElementById('output');
+                                  image.src = result.imgUrl;
+                                  document.getElementById("statuses").value = result.status;
+                                  document.getElementById("pro-nickName").value = result.nickName;
+                                  document.getElementById("pro-firstName").value = result.firstName;
+                                  document.getElementById("pro-lastName").value = result.lastName;
+                                  document.getElementById("pro-email").value = result.email;
+                                  document.getElementById("pro-email").disabled = true;
+                                  document.getElementById("pro-birthday").value = result.birthDate;
+                                  document.getElementById("pro-desc").value = result.description;
+                                  document.getElementById("pro-age").value = result.age;
+
+                                  document.getElementById("isPublic").checked = true;
+
+
+
+
+                                  var image = document.getElementById('output').disabled = true;
+                                  image.src = result.imgUrl;
+                                  document.getElementById("image_input").disabled = true;
+                                  document.getElementById("saveProfile").style.visibility = "hidden";
+                                  document.getElementById("statuses").disabled = true;
+
+
+                                  document.getElementById("pro-nickName").disabled = true;
+                                  document.getElementById("pro-firstName").disabled = true;
+                                  document.getElementById("pro-lastName").disabled = true;
+                                  document.getElementById("pro-email").disabled = true;
+                                  document.getElementById("pro-birthday").disabled = true;
+                                  document.getElementById("pro-desc").disabled = true;
+                                  document.getElementById("pro-age").disabled = true;
+
+                                  document.getElementById("isPublic").disabled = true;
+                                  document.getElementById("isPrivate").disabled = true;
+                                  document.getElementById("successLbl3").innerHTML = "";
+                                  document.getElementById("errorLbl3").innerHTML = "";
+                                }
+
+
+                              });
+                            }))
+                          }
+
+                        }
+                      </script>
+
+                    </table>
+                    <script src="main.js"></script>
+
+                    <div class="text-center mt-3 mt-sm-3">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<!-- privates -->
+<div id="privateChat" style="margin-left: 150px; padding-top: 50px;">
+  <h1 id="chatWith" style="text-align: center;width: 60%;"></h1>
+  <div class="row" style="width: 70%;margin: 100px;">
+
+    <div class="mainchat" style="margin-right: 7px;margin-left: 10px;">
+      <textarea class="form-control" id="private-chat" rows="30"></textarea>
+      <div class="input-group mb-3">
+        <input type="text" id="messagePrivate-input" class="form-control" placeholder="Type your message here..."
+          aria-describedby="sendPrivate-btn">
+        <button class="btn btn-outline-primary" type="button" id="sendPrivate-btn">Send</button>
+        <button class="btn btn-outline-secondary" type="button" id="exportPrivate-btn">Export</button>
+      </div>
+
+    </div>
+
+
+    <div class="userList" style="margin-left: -26px;">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+        integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+      <div">
+        <div class="col-lg-9 mt-lg-0">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
+                <table id="registered-list" class="table manage-candidates-top mb-0">
+                  <thead>
+                    <tr>
+                      <th>Online Users:</th>
+                      <th class="text-center">Status</th>
+                    </tr>
+                  </thead>
+                  <!-- =================================================== -->
+
+                  <tbody class="candidates-list">
+
+
+
+
+                  </tbody>
+                  <script>
+                    function getUserById(id) {
+                      if (sessionStorage.getItem("token") != undefined) {
+                        fetch("http://localhost:8080/user/userById", {
+                          method: 'POST',
+                          body: JSON.stringify({ token: id }),
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'POST,PATCH,OPTIONS'
+                          }
+                        }).then((res => {
+                          let data = res.json();
+                          data.then(function (result) {
+                            let msg = result.message;
+                            console.log("-------------");
+                            console.log(result);
+
+                            if (!result.private) {
+                              document.getElementById("profilePage").style.display = "block";
+                              var image = document.getElementById('output');
+                              image.src = result.imgUrl;
+                              document.getElementById("statuses").value = result.status;
+                              document.getElementById("pro-nickName").value = result.nickName;
+                              document.getElementById("pro-firstName").value = result.firstName;
+                              document.getElementById("pro-lastName").value = result.lastName;
+                              document.getElementById("pro-email").value = result.email;
+                              document.getElementById("pro-email").disabled = true;
+                              document.getElementById("pro-birthday").value = result.birthDate;
+                              document.getElementById("pro-desc").value = result.description;
+                              document.getElementById("pro-age").value = result.age;
+
+                              document.getElementById("isPublic").checked = true;
+
+
+
+
+                              var image = document.getElementById('output').disabled = true;
+                              image.src = result.imgUrl;
+                              document.getElementById("image_input").disabled = true;
+                              document.getElementById("saveProfile").style.visibility = "hidden";
+                              document.getElementById("statuses").disabled = true;
+
+
+                              document.getElementById("pro-nickName").disabled = true;
+                              document.getElementById("pro-firstName").disabled = true;
+                              document.getElementById("pro-lastName").disabled = true;
+                              document.getElementById("pro-email").disabled = true;
+                              document.getElementById("pro-birthday").disabled = true;
+                              document.getElementById("pro-desc").disabled = true;
+                              document.getElementById("pro-age").disabled = true;
+
+                              document.getElementById("isPublic").disabled = true;
+                              document.getElementById("isPrivate").disabled = true;
+                              document.getElementById("successLbl3").innerHTML = "";
+                              document.getElementById("errorLbl3").innerHTML = "";
+                            }
+
+
+                          });
+                        }))
+                      }
+
+                    }
+                  </script>
+
+                </table>
+
+                <div class="text-center mt-3 mt-sm-3">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+
+
+  <div id="profilePage" class="container-fluid main" style="height:100vh;padding-left:0px;width: 50%;">
+
+
+    <div class="col-md-9">
+
+      <div class="container content clear-fix">
+
+        <h2 class="mt-5 mb-5" style="text-align-last: center;">Profile Settings</h2>
+
+        <div class="row" style="height:100%;width: inherit;">
+
+          <div class="col-md-3">
+
+            <div href=# class="d-inline">
+
+              <div id="display_image">
+                <img id="output" width="250px" />
+              </div>
+              <input type="file" id="image_input" accept="image/png,image/jpg">
+
+            </div>
+
+            <div href=# class="d-inline">
+              <br><br>
+              <p>Your Profile is:</p>
+              <input type="radio" id="isPrivate" name="status">
+              <label for="isPrivate">private</label><br>
+              <input type="radio" id="isPublic" name="status">
+              <label for="isPublic">public</label><br>
+
+            </div>
+
+
+          </div>
+
+          <div class="col-md-9" style="padding-left: 20%;">
+
+            <div class="container">
+              <div>
+
+                <div class="form-group">
+                  <div>
+                    <label for=statuses>Your Status</label>
+                    <select name="statuses" id="statuses">
+                      <option value="online">Online</option>
+                      <option value="Away">Away</option>
+                    </select>
+                    <br><br>
+                  </div>
+
+
+                </div>
+                <div>
+
+                  <div class="form-group">
+                    <div>
+                      <label for=nickName>Nickname</label>
+                      <input type="text" class="form-control" id="pro-nickName">
+                    </div>
+
+
+                  </div>
+                  <div>
+                    <label for=firstName>First Name</label>
+                    <input type="text" class="form-control" id="pro-firstName">
+                  </div>
+                  <div>
+                    <label for=lastName>Last Name</label>
+                    <input type="text" class="form-control" id="pro-lastName">
+                  </div>
+                  <div class="form-group">
+
+                    <label for=email>Email</label>
+                    <input type="email" class="form-control" id="pro-email">
+
+                  </div>
+                  <div class="col-md-5">
+
+                    <label for=birthday>Birthday</label>
+                    <input type="date" class="form-control" id="pro-birthday">
+
+                    <label for=age>Age</label>
+                    <input type="number" class="form-control" id="pro-age" disabled>
+
+                  </div>
+
+                  <div class="form-group">
+
+                    <label for=desc>Description</label>
+                    <textarea class="form-control" id="pro-desc"></textarea>
+
+                  </div>
+
+                  <div>
+
+                  </div>
+
+                  <div class="row mt-5">
+
+                    <div class="col">
+
+                      <div>
+                        <label id="successLbl3" style="color:green ;"></label>
+                        <label id="errorLbl3" style="color:red ;"></label>
+                      </div>
+                      <button id="saveProfile" type="button" class="btn btn-primary btn-block">Save Changes</button>
+                      <button id="cancelProfile" type="button" class="btn btn-secondary btn-block">Cancel</button>
+
+
+                    </div>
+
+
+
+
+
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+
+
+</body>
+
+</html>
